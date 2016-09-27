@@ -1,0 +1,48 @@
+box: bendiken/cxx14@0.0.8
+command-timeout: 60
+build:
+  steps:
+    - script:
+        name: build-gcc
+        code: |
+          CXX=g++ ./waf configure
+          ./waf clean
+          ./waf build-full
+    - script:
+        name: test-gcc
+        code: |
+          bin/test
+    - script:
+        name: build-clang
+        code: |
+          CXX=clang CXXFLAGS="-lstdc++" LINKFLAGS="-lstdc++" ./waf configure
+          ./waf clean
+          ./waf
+    - script:
+        name: test-clang
+        code: |
+          bin/test
+
+deploy:
+  steps:
+    - script:
+        name: install
+        code: |
+          sudo apt-get update
+          sudo apt-get install -y curl zip unzip graphviz doxygen wget
+          sudo wget http://launchpadlibrarian.net/163827726/doxygen_1.8.6-2_amd64.deb
+          sudo dpkg -i *.deb
+    - script:
+        name: doxygen
+        code: |
+          doxygen
+    - script:
+        name: heroku-preparation
+        code: |
+          curl https://codeload.github.com/nulltask/heroku-static-provider/zip/master -o heroku-static-provider-master.zip
+          unzip -o heroku-static-provider-master.zip
+          cp -r html/* heroku-static-provider-master/public/
+    - heroku-deploy:
+        # cwd: heroku-static-provider-master/
+        source_dir: heroku-static-provider-master/
+        key-name: default_ssh_key
