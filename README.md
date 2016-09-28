@@ -17,6 +17,10 @@ bin/gomory_hu -graph /data/graph_edges.tsv -cut_tree_output_path=cut_tree.tree
 bin/gomory_hu_tree_query -cut_tree_path=cut_tree.tree
 # calculate connectivity distribution
 bin/connectivity_distribution -cut_tree_input_path=cut_tree.tree -cut_tree_output_path=connectivity.txt
+# connectivity query
+bin/query_connectivity -cut_tree_path=cut_tree.tree -query_path=query.txt -output_path=output.txt
+# partition query
+bin/query_cutset -cut_tree_path=cut_tree.tree -query_path=query.txt -output_path=output.txt
 ```
 
 ## Options
@@ -42,7 +46,7 @@ bin/connectivity_distribution -cut_tree_input_path=cut_tree.tree -cut_tree_outpu
 |Options          |                                                |Type   |Default|
 |:----------------|:-----------------------------------------------|:-----:|:----:|
 |-cut_tree_node_pair_random_seed|output gomory_hu tree path|int64 |922337203685477583|
-|-cut_tree_num_query|number of querys|int32 |10000000|
+|-cut_tree_num_query|number of queries|int32 |10000000|
 |-cut_tree_path|input cut tree path|string |""|
 
 ### bin/connectivity_distribution
@@ -51,6 +55,23 @@ bin/connectivity_distribution -cut_tree_input_path=cut_tree.tree -cut_tree_outpu
 |:----------------|:-----------------------------------------------|:-----:|:----:|
 |-cut_tree_input_path|input cut tree path|string |""|
 |-cut_tree_output_path|output connectivity distribution path|string |""|
+
+### bin/query_connectivity
+
+|Options          |                                                |Type   |Default|
+|:----------------|:-----------------------------------------------|:-----:|:----:|
+|-cut_tree_path|input cut tree path|string |""|
+|-query_path|input query path|string |""|
+|-output_path|output connectivity path|string |""|
+
+### bin/query_cutset
+
+|Options          |                                                |Type   |Default|
+|:----------------|:-----------------------------------------------|:-----:|:----:|
+|-cut_tree_path|input cut tree path|string |""|
+|-query_path|input query path|string |""|
+|-output_path|output partition path|string |""|
+
 
 
 # Supported Formats
